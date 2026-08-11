@@ -38,7 +38,7 @@ public class ConcurrencyStudyController {
     }
 
     @GetMapping("/double-bookings")
-    public Map<String, Object> doubleBookings(@RequestParam Long providerId) {
+    public Map<String, Object> doubleBookings(@RequestParam("providerId") Long providerId) {
         return Map.of(
                 "providerId", providerId,
                 "doubleBookingPairs", bookingCore.countDoubleBookings(providerId),
@@ -52,9 +52,9 @@ public class ConcurrencyStudyController {
      */
     @PostMapping("/race")
     public Map<String, Object> race(
-            @RequestParam StrategyName strategy,
-            @RequestParam(defaultValue = "50") int concurrency,
-            @RequestParam(defaultValue = "true") boolean cleanupBeforeRun,
+            @RequestParam("strategy") StrategyName strategy,
+            @RequestParam(value = "concurrency", defaultValue = "50") int concurrency,
+            @RequestParam(value = "cleanupBeforeRun", defaultValue = "true") boolean cleanupBeforeRun,
             @RequestBody CreateAppointmentRequest request,
             @AuthenticationPrincipal User user) {
         return raceRunner.runSameSlotRace(strategy, request, user, concurrency, cleanupBeforeRun);
