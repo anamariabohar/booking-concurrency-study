@@ -33,3 +33,19 @@ Open `results/threading-report/index.html`.
 - Plans treat **200 and 409 as successful samples** so the dashboard error % reflects real failures only
 - After locking runs, call `GET /api/concurrency/double-bookings?providerId=...` (with JWT) for correctness — especially for `unsafe`
 - Clear overlapping bookings between runs, or use `POST /api/concurrency/race` for an in-process correctness experiment
+
+## Extended correctness matrix (thesis)
+
+Same-slot races at multiple concurrency levels, slots, and repetitions:
+
+```powershell
+cd benchmarks/jmeter
+.\run-correctness-matrix.ps1          # 225 runs → results/correctness-matrix.json
+.\summarize-correctness-matrix.ps1    # → results/correctness-matrix-summary.md
+```
+
+Optional HTTP load sweep at 10/50/100/250/500 threads (local single node):
+
+```powershell
+.\run-jmeter-load-sweep.ps1           # → results/load-sweep/
+```

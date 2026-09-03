@@ -24,6 +24,16 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserRepository userRepository;
 
+    /**
+     * CompletableFuture booking endpoints complete on a worker thread; Spring then
+     * re-dispatches ASYNC. OncePerRequestFilter skips ASYNC by default, so JWT would
+     * not be re-applied and {@code hasRole("CLIENT")} would return 403.
+     */
+    @Override
+    protected boolean shouldNotFilterAsyncDispatch() {
+        return false;
+    }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
